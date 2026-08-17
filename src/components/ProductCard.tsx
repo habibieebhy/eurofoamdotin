@@ -26,7 +26,7 @@ export default function ProductCard({ mattress }: { mattress: Mattress }) {
         <div className="p-6">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.16em] text-coral">
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-gold-dark">
                 {mattress.kicker}
               </p>
               <h3 className="mt-2 font-display text-3xl text-ink">
@@ -51,7 +51,7 @@ export default function ProductCard({ mattress }: { mattress: Mattress }) {
                 {money(mattress.basePrice)}
               </div>
             </div>
-            <span className="rounded-full bg-mint px-3 py-2 text-xs font-black text-ink">
+            <span className="rounded-full bg-gold-light px-3 py-2 text-xs font-black text-ink">
               {discount}% OFF
             </span>
           </div>

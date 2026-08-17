@@ -20,7 +20,7 @@ export default function CartPage() {
             <p className="text-lg text-ink/60">Your cart is empty.</p>
             <Link
               href="/mattresses"
-              className="mt-6 inline-flex rounded-full bg-coral px-6 py-4 text-sm font-black text-white"
+              className="mt-6 inline-flex rounded-full bg-gold px-6 py-4 text-sm font-black text-white"
             >
               SHOP MATTRESSES
             </Link>
@@ -66,7 +66,7 @@ export default function CartPage() {
                       </div>
                       <button
                         onClick={() => removeItem(item.id)}
-                        className="text-xs font-bold text-coral"
+                        className="text-xs font-bold text-gold-dark"
                       >
                         REMOVE
                       </button>
@@ -96,7 +96,7 @@ export default function CartPage() {
               </div>
               <button
                 onClick={() => alert("Demo only — connect Razorpay/Shopify/Stripe checkout here.")}
-                className="mt-7 w-full rounded-full bg-coral px-5 py-4 text-sm font-black"
+                className="mt-7 w-full rounded-full bg-gold px-5 py-4 text-sm font-black"
               >
                 CHECKOUT
               </button>

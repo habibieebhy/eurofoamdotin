@@ -1,0 +1,15 @@
+services:
+  eurofoam:
+    build: .
+    container_name: eurofoam-mattresses
+    restart: unless-stopped
+    ports:
+      - "3700:3000"
+    environment:
+      - CMS_DATA_DIR=/app/data
+      - ADMIN_SESSION_SECRET=${ADMIN_SESSION_SECRET}
+    volumes:
+      - eurofoam_data:/app/data
+
+volumes:
+  eurofoam_data:

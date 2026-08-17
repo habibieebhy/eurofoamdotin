@@ -16,9 +16,9 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Nova Sleep — Better Sleep, Minus The Guesswork",
+  title: "Eurofoam Mattresses | Keep the world at rest",
   description:
-    "Original D2C mattress storefront starter with comparison, sleep quiz, product pages and cart."
+    "Eurofoam Mattresses direct-to-consumer storefront with product comparison, mattress matching and configurable mattress shopping."
 };
 
 export default function RootLayout({

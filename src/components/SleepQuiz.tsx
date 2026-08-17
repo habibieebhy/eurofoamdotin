@@ -2,49 +2,61 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { mattresses } from "@/lib/catalog";
+import type { Mattress } from "@/lib/catalog";
 
 const questions = [
   {
-    key: "position",
     title: "How do you usually sleep?",
     options: ["Side", "Back", "Stomach", "I move around"]
   },
   {
-    key: "temperature",
     title: "Do you sleep hot?",
     options: ["Very much", "Sometimes", "Not really"]
   },
   {
-    key: "feel",
     title: "Which feel sounds best?",
     options: ["Firm & stable", "Balanced", "Soft & buoyant"]
   },
   {
-    key: "priority",
     title: "What matters most?",
     options: ["Back support", "Cooling", "Partner movement", "Price"]
   }
 ];
 
-export default function SleepQuiz() {
+export default function SleepQuiz({ products }: { products: Mattress[] }) {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
-
   const done = step >= questions.length;
 
   const recommendation = useMemo(() => {
-    const joined = answers.join(" ").toLowerCase();
-    if (joined.includes("cooling") || joined.includes("very much")) return mattresses[1];
-    if (joined.includes("partner") || joined.includes("buoyant")) return mattresses[2];
-    if (joined.includes("price")) return mattresses[3];
-    return mattresses[0];
-  }, [answers]);
+    if (!products.length) return null;
 
-  if (done) {
+    const joined = answers.join(" ").toLowerCase();
+    const byCategory = (category: string) =>
+      products.find((product) =>
+        product.category.toLowerCase().includes(category.toLowerCase())
+      );
+
+    if (joined.includes("cooling") || joined.includes("very much")) {
+      return byCategory("cool") || products[0];
+    }
+    if (joined.includes("partner") || joined.includes("buoyant")) {
+      return byCategory("hybrid") || products[0];
+    }
+    if (joined.includes("price")) {
+      return byCategory("essential") || products[products.length - 1] || products[0];
+    }
+    return byCategory("ortho") || products[0];
+  }, [answers, products]);
+
+  if (!products.length) {
+    return <div className="rounded-[2rem] bg-white p-8">No products configured yet.</div>;
+  }
+
+  if (done && recommendation) {
     return (
       <div className="rounded-[2.5rem] bg-white p-7 shadow-xl sm:p-10">
-        <p className="text-xs font-black uppercase tracking-[0.18em] text-coral">
+        <p className="text-xs font-black uppercase tracking-[0.18em] text-gold-dark">
           Your starting point
         </p>
         <h2 className="mt-4 font-display text-5xl">{recommendation.name}</h2>
@@ -55,7 +67,7 @@ export default function SleepQuiz() {
         <div className="mt-7 flex flex-wrap gap-3">
           <Link
             href={`/mattresses/${recommendation.slug}`}
-            className="rounded-full bg-coral px-6 py-4 text-sm font-black text-white"
+            className="rounded-full bg-gold px-6 py-4 text-sm font-black text-ink"
           >
             VIEW {recommendation.name.toUpperCase()}
           </Link>
@@ -83,7 +95,7 @@ export default function SleepQuiz() {
       </div>
       <div className="mt-4 h-2 overflow-hidden rounded-full bg-sand">
         <div
-          className="h-full rounded-full bg-coral transition-all"
+          className="h-full rounded-full bg-gold transition-all"
           style={{ width: `${(step / questions.length) * 100}%` }}
         />
       </div>
@@ -96,7 +108,7 @@ export default function SleepQuiz() {
               setAnswers((current) => [...current, option]);
               setStep((current) => current + 1);
             }}
-            className="rounded-[1.25rem] border border-ink/10 bg-sand px-5 py-5 text-left font-bold transition hover:border-coral hover:bg-white"
+            className="rounded-[1.25rem] border border-ink/10 bg-sand px-5 py-5 text-left font-bold transition hover:border-gold-dark hover:bg-white"
           >
             {option}
           </button>

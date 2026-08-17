@@ -3,7 +3,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductBuyBox from "@/components/ProductBuyBox";
 import ProductCard from "@/components/ProductCard";
-import { getMattress, mattresses } from "@/lib/catalog";
+import { getProduct, getStoreData } from "@/lib/store";
+
+export const dynamic = "force-dynamic";
 
 export default async function MattressPage({
   params
@@ -11,10 +13,11 @@ export default async function MattressPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const mattress = getMattress(slug);
+  const mattress = await getProduct(slug);
   if (!mattress) notFound();
 
-  const related = mattresses.filter((item) => item.slug !== mattress.slug).slice(0, 2);
+  const { products } = await getStoreData();
+  const related = products.filter((item) => item.slug !== mattress.slug).slice(0, 2);
 
   return (
     <>
@@ -35,25 +38,24 @@ export default async function MattressPage({
           <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8">
             <div className="grid gap-12 lg:grid-cols-[.7fr_1.3fr]">
               <div>
-                <p className="text-xs font-black uppercase tracking-[0.18em] text-coral">
+                <p className="text-xs font-black uppercase tracking-[0.18em] text-gold-dark">
                   Inside the mattress
                 </p>
                 <h2 className="mt-4 font-display text-5xl">
                   Every layer has a job.
                 </h2>
                 <p className="mt-5 text-sm leading-7 text-ink/60">
-                  Use this section to explain density, ILD, foam chemistry,
-                  spring gauge, GSM, certifications and test results once your
-                  real product specification is available.
+                  Use the admin panel to replace these descriptions with real
+                  foam density, ILD, spring gauge, fabric GSM and certifications.
                 </p>
               </div>
 
               <div className="space-y-3">
                 {mattress.layers.map((layer, index) => (
                   <div
-                    key={layer.name}
+                    key={`${layer.name}-${index}`}
                     className={`rounded-[1.4rem] border border-ink/10 p-5 ${
-                      ["bg-mint", "bg-sky", "bg-lilac", "bg-butter"][index % 4]
+                      ["bg-gold-light", "bg-sky", "bg-lilac", "bg-sage"][index % 4]
                     }`}
                   >
                     <div className="flex gap-5">
@@ -78,27 +80,29 @@ export default async function MattressPage({
           <h2 className="font-display text-5xl">What it is designed to do</h2>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {mattress.features.map((feature, index) => (
-              <div key={feature} className="rounded-[1.5rem] border border-ink/10 bg-white p-5">
-                <div className="text-sm font-black text-coral">0{index + 1}</div>
+              <div key={`${feature}-${index}`} className="rounded-[1.5rem] border border-ink/10 bg-white p-5">
+                <div className="text-sm font-black text-gold-dark">0{index + 1}</div>
                 <p className="mt-5 font-bold leading-6">{feature}</p>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="bg-ink">
-          <div className="mx-auto max-w-7xl px-5 py-20 text-white lg:px-8">
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-mint">
-              Still comparing?
-            </p>
-            <h2 className="mt-4 font-display text-5xl">Two other directions.</h2>
-            <div className="mt-8 grid gap-6 md:grid-cols-2">
-              {related.map((item) => (
-                <ProductCard key={item.slug} mattress={item} />
-              ))}
+        {related.length ? (
+          <section className="bg-ink">
+            <div className="mx-auto max-w-7xl px-5 py-20 text-white lg:px-8">
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-gold">
+                Still comparing?
+              </p>
+              <h2 className="mt-4 font-display text-5xl">Other directions.</h2>
+              <div className="mt-8 grid gap-6 md:grid-cols-2">
+                {related.map((item) => (
+                  <ProductCard key={item.slug} mattress={item} />
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        ) : null}
       </main>
       <Footer />
     </>

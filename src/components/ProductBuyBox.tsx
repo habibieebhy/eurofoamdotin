@@ -20,7 +20,7 @@ export default function ProductBuyBox({ mattress }: { mattress: Mattress }) {
 
   return (
     <div className="rounded-[2rem] border border-ink/10 bg-white p-6 shadow-[0_15px_50px_rgba(22,29,35,0.08)] md:p-8">
-      <p className="text-xs font-black uppercase tracking-[0.2em] text-coral">
+      <p className="text-xs font-black uppercase tracking-[0.2em] text-gold-dark">
         {mattress.kicker}
       </p>
       <h1 className="mt-3 font-display text-5xl text-ink sm:text-6xl">
@@ -106,7 +106,7 @@ export default function ProductBuyBox({ mattress }: { mattress: Mattress }) {
           setAdded(true);
           setTimeout(() => setAdded(false), 1400);
         }}
-        className="mt-6 w-full rounded-full bg-coral px-6 py-4 text-base font-black text-white transition hover:translate-y-[-1px] hover:shadow-lg"
+        className="mt-6 w-full rounded-full bg-gold px-6 py-4 text-base font-black text-white transition hover:translate-y-[-1px] hover:shadow-lg"
       >
         {added ? "ADDED TO CART ✓" : "ADD TO CART"}
       </button>
